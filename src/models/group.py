@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String
 from marshmallow import fields
@@ -15,7 +14,7 @@ class TravelGroup(db.Model):
 
 
 class TravelGroupSchema(ma.Schema):
-    password = fields.String(validate=Length(min=6, error='Password must be at least 6 characters long'), required=True)
+    password = fields.String(validate=Length(min=8, error='Password must be at least 8 characters long'), required=True)
 
     class Meta:
         fields = ('id', 'user_id', 'loyalty_id', 'password')
