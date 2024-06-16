@@ -1,6 +1,6 @@
-from datetime import date
+from datetime import date, datetime
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Boolean
+from sqlalchemy import String, Boolean, ForeignKey
 from marshmallow import fields
 from marshmallow.validate import Length
 from init import db, ma
@@ -13,8 +13,8 @@ class Passport(db.Model):
     issue_country: Mapped[str] = mapped_column(String(30))
     birth_country: Mapped[str] = mapped_column(String(30))
     passport_number: Mapped[str] = mapped_column(String(15))
-    issue_date: Mapped[date] = mapped_column(date)
-    expiration_date: Mapped[date] = mapped_column(date)
+    issue_date: Mapped[date] = mapped_column()
+    expiration_date: Mapped[date] = mapped_column()
                                                 
 
 class UserSchema(ma.Schema):
