@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, ForeignKey, Text
-from marshmallow import fields
-from marshmallow.validate import Length
+from sqlalchemy import String, ForeignKey
 from init import db, ma
 
 class Loyalty(db.Model):

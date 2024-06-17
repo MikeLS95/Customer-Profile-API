@@ -1,5 +1,6 @@
+from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Boolean
+from sqlalchemy import String, Boolean, ForeignKey
 from marshmallow import fields
 from marshmallow.validate import Length
 from init import db, ma
@@ -13,6 +14,7 @@ class User(db.Model):
     last_name: Mapped[str] = mapped_column(String(30))
     password: Mapped[str] = mapped_column(String(100))
     is_admin: Mapped[bool] = mapped_column(Boolean(), server_default='false')
+
 
 class UserSchema(ma.Schema):
     email = fields.Email(required=True)

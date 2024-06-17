@@ -1,8 +1,6 @@
-from datetime import date, datetime
+from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Boolean, ForeignKey
-from marshmallow import fields
-from marshmallow.validate import Length
+from sqlalchemy import String, ForeignKey
 from init import db, ma
 
 

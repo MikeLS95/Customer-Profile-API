@@ -19,10 +19,15 @@ def db_create():
             last_name='Sheppard',
             password=bcrypt.generate_password_hash('admin123').decode('utf-8'),
             is_admin=True
+        ),
+        User(
+            email='ben@travelprofile.com',
+            first_name='Ben',
+            last_name='Benson',
+            password=bcrypt.generate_password_hash('benson123').decode('utf-8'),
         )
     ]
-
+    
     db.session.add_all(users)
     db.session.commit()
-
     print('Users added')
