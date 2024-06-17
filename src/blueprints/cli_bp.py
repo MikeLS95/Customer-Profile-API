@@ -18,8 +18,7 @@ def db_create():
     users = [
         User(
             email='admin@travelprofile.com',
-            first_name='Mike',
-            last_name='Sheppard',
+            first_name='Admin',
             password=bcrypt.generate_password_hash('admin123').decode('utf-8'),
             is_admin=True
         ),
