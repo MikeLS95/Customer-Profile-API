@@ -37,11 +37,11 @@ def db_create():
 
     # groups = [
     #     Group(
-
+    #         name='Group 1'
     #     )
     # ]
 
-    # db.session.add_all(group)
+    # db.session.add_all(groups)
     # db.session.commit()
     # print('Groups added')
 

@@ -1,14 +1,15 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, ForeignKey
 from init import db, ma
 
 class Group(db.Model):
     __tablename__ = "groups"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(300))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(300), nullable=False)
+
+    # users_id = db.Column(db.String, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='groups', cascade='all, delete')
 
 
 class TravelGroupSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'user_id')
+        fields = ('id', 'name')
