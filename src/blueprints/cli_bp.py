@@ -1,6 +1,9 @@
 from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
+# from models.group import Group
+# from models.loyalty import Loyalty
+# from models.passport import Passport
 
 
 db_commands = Blueprint('db', __name__)
@@ -31,3 +34,34 @@ def db_create():
     db.session.add_all(users)
     db.session.commit()
     print('Users added')
+
+    # groups = [
+    #     Group(
+
+    #     )
+    # ]
+
+    # db.session.add_all(group)
+    # db.session.commit()
+    # print('Groups added')
+
+    # loyalties = [
+    #     Loyalty(
+
+    #     )
+    # ]
+
+    # db.session.add_all(loyalties)
+    # db.session.commit()
+    # print('Loyalties added')
+
+    # passports = [
+    #     Passport(
+
+    #     )
+    # ]
+
+    # db.session.add_all(passports)
+    # db.session.commit()
+    # print('Passports added')
+         
