@@ -13,7 +13,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, server_default='false')
 
-    passport = db.relationship('Passport', back_populates='user')
+    passport = db.relationship('Passport', back_populates='user', cascade='all,delete')
 
 
 class UserSchema(ma.Schema):

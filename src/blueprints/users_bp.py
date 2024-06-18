@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
 from init import db, bcrypt
 from models.user import User, UserSchema
+from models.passport import Passport
 
 users_bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -80,4 +81,4 @@ def delete_user(id):
     # add authorization
     db.session.delete(user)
     db.session.commit()
-    return {}
+    return ({'message': 'User deleted'}), 200

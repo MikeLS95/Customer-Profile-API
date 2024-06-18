@@ -17,7 +17,7 @@ def index():
 @app.errorhandler(405)
 @app.errorhandler(404)
 def not_found(err):
-    return {'ERROR': 'Not found'}
+    return {'ERROR': 'Not found'}, 404
 
 @app.errorhandler(ValidationError)
 def invalid_request(err):
