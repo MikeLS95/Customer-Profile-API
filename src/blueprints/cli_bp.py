@@ -46,25 +46,6 @@ def db_create():
     db.session.commit()
     print('Users added')
 
-    # groups = [
-    #     Group(
-    #         name='Group 1'
-    #     )
-    # ]
-
-    # db.session.add_all(groups)
-    # db.session.commit()
-    # print('Groups added')
-
-    # loyalties = [
-    #     Loyalty(
-
-    #     )
-    # ]
-
-    # db.session.add_all(loyalties)
-    # db.session.commit()
-    # print('Loyalties added')
 
     passports = [
         Passport(
