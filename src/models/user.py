@@ -14,6 +14,7 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, server_default='false')
 
     passport = db.relationship('Passport', back_populates='user', cascade='all,delete')
+    loyalties = db.relationship('Loyalty', back_populates='user', cascade='all,delete')
 
 
 class UserSchema(ma.Schema):

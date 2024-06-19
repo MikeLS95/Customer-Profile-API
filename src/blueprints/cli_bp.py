@@ -2,7 +2,7 @@ from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
 # from models.group import Group
-# from models.loyalty import Loyalty
+from models.loyalty import Loyalty
 from models.passport import Passport
 
 
@@ -69,4 +69,22 @@ def db_create():
     db.session.add_all(passports)
     db.session.commit()
     print('Passports added')
+
+
+    loyalties = [
+        Loyalty(
+            supplier="QANTAS",
+            type="airline",
+            user_id=2
+        ),
+        Loyalty(
+            supplier="hurts",
+            type="car",
+            user_id=2
+        )
+    ]
+
+    db.session.add_all(loyalties)
+    db.session.commit()
+    print('Loyalties added')
          

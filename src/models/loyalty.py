@@ -1,17 +1,18 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, ForeignKey
 from init import db, ma
+
 
 class Loyalty(db.Model):
     __tablename__ = "loyalties"
 
-    # id: Mapped[int] = mapped_column(primary_key=True)
-    # user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    # group_id: Mapped[int] = mapped_column(ForeignKey('group.id'))
-    # points: Mapped[int] = mapped_column()
-    # rewards: Mapped[str] = mapped_column(String(300))
+    id = db.Column(db.Integer, primary_key=True)
+    supplier = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship('User', back_populates='loyalties')
 
 
-class TravelGroupSchema(ma.Schema):
+
+class LoyaltySchema(ma.Schema):
     class Meta:
-        fields = ('id', 'user_id', 'group_id', 'points', 'rewards')
+        fields = ('id', 'user_id', 'supplier', 'type')
