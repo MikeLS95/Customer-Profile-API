@@ -4,10 +4,6 @@ from models.passport import Passport, PassportSchema
 from models.user import User
 
 
-# TO be done -----
-# - Make sure when passport is retrieved, added or updated that user first and last names appear in json.
-
-
 passport_bp = Blueprint('passport', __name__, url_prefix='/passport')
 
 
@@ -16,11 +12,14 @@ passport_bp = Blueprint('passport', __name__, url_prefix='/passport')
 #admin only
 def add_passport():
     params = PassportSchema().load(request.json)
+    
+    # Displays error message if user_id already has a passport_id
     stmt = db.select(Passport).where(Passport.user_id == params['user_id'])
     pass_match = db.session.scalar(stmt)
-    # Displays error if user_id already has a passport_id
     if pass_match:
         return {'ERROR': 'Passport for selected user already exists'}, 409
+    
+    # requirements for new passport
     passport = Passport(
         issue_country=params["issue_country"],
         birth_country=params["birth_country"],
@@ -29,10 +28,12 @@ def add_passport():
         expiration_date=params["expiration_date"],
         user_id=params["user_id"],
     )
+    
+    # displays error message if the requested used id does not exist
     user_exists = User.query.get(params['user_id'])
-    # makes sure the user exists
     if not user_exists:
         return {'ERROR': 'user_id does not exist'}, 404
+    
     db.session.add(passport)
     db.session.commit()
     return PassportSchema().dump(passport), 201
@@ -62,7 +63,7 @@ def update_passport(id):
     passport = db.get_or_404(Passport, id)
     params = PassportSchema().load(request.json, partial=True, unknown='exclude')
     
-    # Required parameters for updating
+    # Required parameters for updating passport
     passport.issue_country = params.get('issue_country', passport.issue_country)
     passport.birth_country = params.get('birth_country', passport.birth_country)
     passport.passport_number = params.get('passport_number', passport.passport_number)

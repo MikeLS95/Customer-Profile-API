@@ -11,9 +11,11 @@ users_bp = Blueprint('users', __name__, url_prefix='/users')
 # Create a login key (C)
 @users_bp.route('/login', methods=['POST'])
 def login():
+    # if user email matches checks passport, if no match, shows error message
     params = UserSchema(only=['email', 'password']).load(request.json, unknown='exclude')
     stmt = db.select(User).where(User.email == params['email'])
     user = db.session.scalar(stmt)
+    # checks for password match then creates a key token, if no match, shows error message
     if user and bcrypt.check_password_hash(user.password, params['password']):
         token = create_access_token(identity=user.id, expires_delta=timedelta(hours=2))
         return {'token': token}
@@ -25,10 +27,13 @@ def login():
 @users_bp.route('/', methods=['POST'])
 def create_user():
     params = UserSchema().load(request.json, unknown='exclude')
+    
     stmt = db.select(User).where(User.email == params['email'])
     user_match = db.session.scalar(stmt)
     if user_match:
         return {'ERROR': 'User already exists'}, 409
+    
+    # requirements for new user
     user = User(
         email=params["email"],
         first_name=params["first_name"],

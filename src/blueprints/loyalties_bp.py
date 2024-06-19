@@ -10,11 +10,13 @@ loyalties_bp = Blueprint('loyalties', __name__, url_prefix='/loyalties')
 @loyalties_bp.route('/', methods=['POST'])
 def add_loyalty():
     params = LoyaltySchema().load(request.json)
+
     loyalty = Loyalty(
         supplier=params["supplier"],
         type=params["type"],
         user_id=params["user_id"],
     )
+    
     user_exists = User.query.get(params['user_id'])
     if not user_exists:
         return {'ERROR': 'user_id does not exist'}, 404
