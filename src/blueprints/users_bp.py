@@ -3,7 +3,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
 from init import db, bcrypt
 from models.user import User, UserSchema
-from models.passport import Passport
+
 
 users_bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -41,6 +41,7 @@ def create_user():
         password=bcrypt.generate_password_hash(params["password"]).decode('utf-8'),
         is_admin=False,
     )
+
     db.session.add(user)
     db.session.commit()
     return UserSchema(exclude=['password']).dump(user), 201
@@ -70,6 +71,7 @@ def update_user(id):
     user = db.get_or_404(User, id)
     params = UserSchema().load(request.json, partial=True, unknown='exclude')
     
+    # required parameters for updating user
     user.email = params.get('email', user.email)
     user.first_name = params.get('first_name', user.first_name)
     user.last_name = params.get('last_name', user.last_name)

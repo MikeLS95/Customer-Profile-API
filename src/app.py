@@ -4,12 +4,14 @@ from blueprints.cli_bp import db_commands
 from blueprints.users_bp import users_bp
 from blueprints.passports_bp import passport_bp
 from blueprints.loyalties_bp import loyalties_bp
+from blueprints.groups_bp import groups_bp
 
 
 app.register_blueprint(db_commands)
 app.register_blueprint(users_bp)
 app.register_blueprint(passport_bp)
 app.register_blueprint(loyalties_bp)
+app.register_blueprint(groups_bp)
 
 
 @app.route('/')
