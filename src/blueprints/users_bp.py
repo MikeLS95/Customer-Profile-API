@@ -64,11 +64,13 @@ def one_users(id):
 def update_user(id):
     user = db.get_or_404(User, id)
     params = UserSchema().load(request.json, partial=True, unknown='exclude')
+    
     user.email = params.get('email', user.email)
     user.first_name = params.get('first_name', user.first_name)
     user.last_name = params.get('last_name', user.last_name)
     user.is_admin = params.get('is_admin', user.is_admin)
     user.password = params.get('password', user.password)
+    
     db.session.commit()
     return UserSchema(exclude=["password"]).dump(user)
 

@@ -61,12 +61,14 @@ def one_passport(id):
 def update_passport(id):
     passport = db.get_or_404(Passport, id)
     params = PassportSchema().load(request.json, partial=True, unknown='exclude')
+    
     # Required parameters for updating
     passport.issue_country = params.get('issue_country', passport.issue_country)
     passport.birth_country = params.get('birth_country', passport.birth_country)
     passport.passport_number = params.get('passport_number', passport.passport_number)
     passport.issue_date = params.get('issue_date', passport.issue_date)
     passport.expiration_date = params.get('expiration_date', passport.expiration_date)
+    
     db.session.commit()
     return PassportSchema().dump(passport)
 
@@ -78,4 +80,4 @@ def delete_passport(id):
     passport = db.get_or_404(Passport, id)
     db.session.delete(passport)
     db.session.commit()
-    return {}
+    return ({'message' : 'Passport deleted and removed from user'})
