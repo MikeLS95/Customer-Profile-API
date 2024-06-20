@@ -17,9 +17,11 @@ def add_loyalty():
         user_id=params["user_id"],
     )
     
+    # Error message for if no user id matching query
     user_exists = User.query.get(params['user_id'])
     if not user_exists:
         return {'ERROR': 'user_id does not exist'}, 404
+    
     db.session.add(loyalty)
     db.session.commit()
     return LoyaltySchema().dump(loyalty), 201

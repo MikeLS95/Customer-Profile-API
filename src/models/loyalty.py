@@ -12,7 +12,6 @@ class Loyalty(db.Model):
     user = db.relationship('User', back_populates='loyalties')
 
 
-
 class LoyaltySchema(ma.Schema):
     class Meta:
         fields = ('id', 'user_id', 'supplier', 'type')

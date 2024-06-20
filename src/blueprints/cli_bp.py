@@ -46,7 +46,6 @@ def db_create():
     db.session.commit()
     print('Users added')
 
-
     passports = [
         Passport(
             issue_country='Australia',
@@ -69,7 +68,6 @@ def db_create():
     db.session.add_all(passports)
     db.session.commit()
     print('Passports added')
-
 
     loyalties = [
         Loyalty(
