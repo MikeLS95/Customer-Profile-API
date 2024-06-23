@@ -6,8 +6,8 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300), nullable=False)
 
-    users_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False, many=True)
-    user = db.relationship('User', back_populates='groups', cascade='all, delete')
+    # users_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False, many=True)
+    # user = db.relationship('User', back_populates='groups', cascade='all, delete')
 
 
 class GroupSchema(ma.Schema):
