@@ -1,3 +1,4 @@
+from marshmallow import fields
 from init import db, ma
 
 
@@ -16,5 +17,7 @@ class Passport(db.Model):
                                                 
 
 class PassportSchema(ma.Schema):
+    user = fields.Nested('UserSchema', exclude=['password'])
+
     class Meta:
-        fields = ('id', 'issue_country', 'birth_country', 'passport_number', 'issue_date', 'expiration_date', 'user_id')
+        fields = ('id', 'issue_country', 'birth_country', 'passport_number', 'issue_date', 'expiration_date', 'user')

@@ -69,6 +69,7 @@ def db_create():
     db.session.commit()
     print('Passports added')
 
+
     loyalties = [
         Loyalty(
             supplier="QANTAS",
@@ -86,10 +87,15 @@ def db_create():
     db.session.commit()
     print('Loyalties added')
 
+
     groups = [
         Group(
-            name="Bert family",
-            user_id= [3, 4]
+            name="Group 1",
+            user_id=2
+        ),
+        Group(
+            name="Group 2",
+            user_id=2
         )
     ]
 
