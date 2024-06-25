@@ -15,6 +15,7 @@ class User(db.Model):
 
     passport = db.relationship('Passport', back_populates='user', cascade='all,delete')
     loyalties = db.relationship('Loyalty', back_populates='user', cascade='all,delete')
+    groups = db.relationship('Group', secondary='user_groups', back_populates='user', cascade='all,delete')
 
 
 class UserSchema(ma.Schema):

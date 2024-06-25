@@ -89,7 +89,7 @@ def db_create():
     groups = [
         Group(
             name="Bert family",
-            # user_id=4
+            user_id= [3, 4]
         )
     ]
 

@@ -17,4 +17,4 @@ class Passport(db.Model):
 
 class PassportSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'user_id', 'issue_country', 'birth_country', 'passport_number', 'issue_date', 'expiration_date')
+        fields = ('id', 'issue_country', 'birth_country', 'passport_number', 'issue_date', 'expiration_date', 'user_id')
