@@ -38,7 +38,7 @@ def db_create():
             email='GrahamB@travelprofile.com',
             first_name='Graham',
             last_name='Bert',
-            password=bcrypt.generate_password_hash('benson123').decode('utf-8'),
+            password=bcrypt.generate_password_hash('test123').decode('utf-8'),
         )
     ]
     
@@ -91,11 +91,13 @@ def db_create():
     groups = [
         Group(
             name="Group 1",
-            user_id=2
+            first_member_id=2,
+            second_member_id=4
         ),
         Group(
             name="Group 2",
-            user_id=2
+            first_member_id=3,
+            second_member_id=2
         )
     ]
 

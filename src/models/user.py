@@ -15,7 +15,9 @@ class User(db.Model):
 
     passport = db.relationship('Passport', back_populates='user', cascade='all,delete')
     loyalties = db.relationship('Loyalty', back_populates='user', cascade='all,delete')
-    groups = db.relationship('Group', back_populates='user', cascade='all,delete')
+
+    first_member = db.relationship('Group', foreign_keys='Group.first_member_id', back_populates='first_member', primaryjoin='User.id == Group.first_member_id', cascade='all,delete')
+    second_member = db.relationship('Group', foreign_keys='Group.second_member_id', back_populates='second_member', primaryjoin='User.id == Group.second_member_id', cascade='all,delete')
 
 
 class UserSchema(ma.Schema):
