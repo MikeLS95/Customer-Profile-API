@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from sqlalchemy.orm import session
 from init import db
 from models.group import Group, GroupSchema
 from models.user import User
@@ -36,11 +37,18 @@ def add_group():
     name_match = db.session.scalar(stmt)
     if name_match:
         return {'ERROR': 'Group name already exists, please choose a unique name.'}, 400
-    
+
+    errors = validate_user_ids(params)
+    if errors:
+        return {'ERROR': errors}, 400
+
+    # requirements for new group
     group = Group(
         name=params["name"],
         first_member_id=params["first_member_id"],
-        second_member_id=params["second_member_id"]
+        second_member_id=params["second_member_id"],
+        third_member_id=params["third_member_id"],
+        fourth_member_id=params["fourth_member_id"]
     )
 
     db.session.add(group)
@@ -52,3 +60,19 @@ def add_group():
             "third_member_id",
             "fourth_member_id"
             ]).dump(group), 201
+
+
+def validate_user_ids(params):
+    errors = []
+    user_ids = [
+        params["first_member_id"], params["second_member_id"],
+        params.get("third_member_id"), params.get("fourth_member_id")
+    ]
+
+    for user_id in user_ids:
+        if user_id is not None:  # Check for optional third and fourth members
+            user = User.query.get(user_id)
+            if not user:
+                errors.append(f"User with ID {user_id} does not exist.")
+
+    return errors if errors else None

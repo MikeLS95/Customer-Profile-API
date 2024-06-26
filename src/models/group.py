@@ -20,6 +20,10 @@ class Group(db.Model):
 
 
 class GroupSchema(ma.Schema):
+    first_member_id = fields.Integer(allow_none=True)
+    second_member_id = fields.Integer(allow_none=True)
+    third_member_id = fields.Integer(allow_none=True, missing=None)
+    fourth_member_id = fields.Integer(allow_none=True, missing=None)
     first_member = fields.Nested('UserSchema', only=['id', 'first_name', 'last_name', 'email'])
     second_member = fields.Nested('UserSchema', only=['id', 'first_name', 'last_name', 'email'])
     third_member = fields.Nested('UserSchema', only=['id', 'first_name', 'last_name', 'email'], allow_none=True)

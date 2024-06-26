@@ -4,3 +4,4 @@ __pycache__
 .env
 .flaskenv
 .vscode
+delete_before_upload.py
