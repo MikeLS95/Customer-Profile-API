@@ -21,30 +21,6 @@ def login():
         return {'token': token}
     else:
         return {'ERROR': 'Invalid email or password'}, 401
-    
-
-# Create User (C)
-@users_bp.route('/', methods=['POST'])
-def create_user():
-    params = UserSchema().load(request.json, unknown='exclude')
-    
-    stmt = db.select(User).where(User.email == params['email'])
-    user_match = db.session.scalar(stmt)
-    if user_match:
-        return {'ERROR': 'User already exists'}, 409
-    
-    # requirements for new user
-    user = User(
-        email=params["email"],
-        first_name=params["first_name"],
-        last_name=params["last_name"],
-        password=bcrypt.generate_password_hash(params["password"]).decode('utf-8'),
-        is_admin=False,
-    )
-
-    db.session.add(user)
-    db.session.commit()
-    return UserSchema(exclude=['password']).dump(user), 201
 
 
 # Read all users (R)
@@ -62,6 +38,29 @@ def all_users():
 def one_users(id):
     user = db.get_or_404(User, id)
     return UserSchema(exclude=["password"]).dump(user)
+
+
+# Create User (C)
+@users_bp.route('/', methods=['POST'])
+def create_user():
+    params = UserSchema().load(request.json, unknown='exclude')
+    
+    stmt = db.select(User).where(User.email == params['email'])
+    user_match = db.session.scalar(stmt)
+    if user_match:
+        return {'ERROR': 'User already exists'}, 409
+    
+    # requirements for new user
+    user = User(
+        email=params["email"],
+        first_name=params["first_name"],
+        password=bcrypt.generate_password_hash(params["password"]).decode('utf-8'),
+        is_admin=False,
+    )
+
+    db.session.add(user)
+    db.session.commit()
+    return UserSchema(exclude=['password']).dump(user), 201
 
 
 # Update user information (U)

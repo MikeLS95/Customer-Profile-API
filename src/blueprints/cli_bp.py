@@ -9,12 +9,17 @@ from models.passport import Passport
 db_commands = Blueprint('db', __name__)
 
 
+# Command used for replacing the database with the seeded entity data below in the database
 @db_commands.cli.command('create')
 def db_create():
+    # Deletes current data in database
     db.drop_all()
+    # Inserts new data in database
     db.create_all()
     print('Created tables')
 
+
+    # Seeds users in the database
     users = [
         User(
             email='admin@travelprofile.com',
@@ -44,8 +49,9 @@ def db_create():
     
     db.session.add_all(users)
     db.session.commit()
-    print('Users added')
 
+
+    # Seeds passports in the database
     passports = [
         Passport(
             issue_country='Australia',
@@ -67,9 +73,9 @@ def db_create():
 
     db.session.add_all(passports)
     db.session.commit()
-    print('Passports added')
 
 
+    # Seeds loyalties in the database
     loyalties = [
         Loyalty(
             supplier="QANTAS",
@@ -85,9 +91,9 @@ def db_create():
 
     db.session.add_all(loyalties)
     db.session.commit()
-    print('Loyalties added')
 
 
+    # Seeds groups in the database
     groups = [
         Group(
             name="Group 1",
@@ -103,5 +109,4 @@ def db_create():
 
     db.session.add_all(groups)
     db.session.commit()
-    print('Groups added')
-         
+    print('Database seeded')

@@ -13,8 +13,12 @@ class Base(DeclarativeBase):
 
 app = Flask(__name__)
 
+# Gets JWT_KEY from .env file
 app.config['JWT_SECRET_KEY'] = environ.get('JWT_KEY')
+# Gets URI from .env file
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URI')
+# Shows returned json response as entered in schema
+app.json.sort_keys = False
 
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)

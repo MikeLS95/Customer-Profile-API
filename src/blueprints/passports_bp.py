@@ -4,7 +4,24 @@ from models.passport import Passport, PassportSchema
 from models.user import User
 
 
-passport_bp = Blueprint('passport', __name__, url_prefix='/passport')
+passport_bp = Blueprint('passports', __name__, url_prefix='/passports')
+
+
+# Retrieves all passports in database, shows user_id
+@passport_bp.route('/', methods=['GET'])
+# admin only
+def all_passports():
+    stmt = db.select(Passport)
+    passports = db.session.scalars(stmt).all()
+    return PassportSchema(many=True).dump(passports)
+
+
+# Retrieve a passport from the provided passport id
+@passport_bp.route('/<int:id>', methods=['GET'])
+# admin only
+def one_passport(id):
+    passport = db.get_or_404(Passport, id)
+    return PassportSchema().dump(passport)
 
 
 # Create a new passport if a user exists and doesn't already have a passport associated with their user_id
@@ -37,23 +54,6 @@ def add_passport():
     db.session.add(passport)
     db.session.commit()
     return PassportSchema().dump(passport), 201
-
-
-# Retrieves all passports in database, shows user_id
-@passport_bp.route('/', methods=['GET'])
-# admin only
-def all_passports():
-    stmt = db.select(Passport)
-    passports = db.session.scalars(stmt).all()
-    return PassportSchema(many=True).dump(passports)
-
-
-# Retrieve a passport from the provided passport id
-@passport_bp.route('/<int:id>', methods=['GET'])
-# admin only
-def one_passport(id):
-    passport = db.get_or_404(Passport, id)
-    return PassportSchema().dump(passport)
 
 
 # Retrieve and update a passport form the selected passport id
