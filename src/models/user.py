@@ -1,3 +1,4 @@
+from typing import Optional
 from marshmallow import fields
 from marshmallow.validate import Length
 from init import db, ma
@@ -25,6 +26,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     email = fields.Email(required=True)
     password = fields.String(validate=Length(min=6, max=22, error='Password must be at between 6 and 22 characters long.'), required=True)
+    last_name = fields.String(required=False)
 
     class Meta:
         fields = ('id', 'email', 'first_name', 'last_name', 'password', 'is_admin')

@@ -54,6 +54,7 @@ def create_user():
     user = User(
         email=params["email"],
         first_name=params["first_name"],
+        last_name=params["last_name"],
         password=bcrypt.generate_password_hash(params["password"]).decode('utf-8'),
         is_admin=False,
     )

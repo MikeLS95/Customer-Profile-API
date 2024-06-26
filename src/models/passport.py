@@ -11,8 +11,8 @@ class Passport(db.Model):
     passport_number = db.Column(db.String, nullable=False)
     issue_date = db.Column(db.Date, nullable=False)
     expiration_date = db.Column(db.Date, nullable=False)
-
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
     user = db.relationship('User', back_populates='passports')
                                                 
 

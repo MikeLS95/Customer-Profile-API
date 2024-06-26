@@ -32,34 +32,20 @@ def one_group(id):
 @groups_bp.route('/', methods=['POST'])
 def add_group():
     params = GroupSchema().load(request.json)
-
-    group = Group(
-        name=params["name"],
-        first_member_id=params["first_member_id"],
-        second_member_id=params["second_member_id"],
-    )
-
     stmt = db.select(Group).where(Group.name == params["name"])
     name_match = db.session.scalar(stmt)
     if name_match:
         return {'ERROR': 'Group name already exists, please choose a unique name.'}, 400
     
-    # member_exists = User.query.get(
-    #     params[
-    #         "first_member_id", 
-    #         "second_member_id",
-    #         "third_member_id",
-    #         "fourth_member_id"
-    #            ]
-    #            )
-    # if not member_exists:
-    #     return {'ERROR': 'member_id does not exist'}, 404
-
+    group = Group(
+        name=params["name"],
+        first_member_id=params["first_member_id"],
+        second_member_id=params["second_member_id"]
+    )
 
     db.session.add(group)
     db.session.commit()
     return GroupSchema(        
-        many=True, 
         exclude=[
             "first_member_id", 
             "second_member_id",
