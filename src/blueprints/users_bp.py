@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
 from init import db, bcrypt
 from models.user import User, UserSchema
+from auth import admin_only
 
 
 users_bp = Blueprint('users', __name__, url_prefix='/users')
@@ -25,7 +26,7 @@ def login():
 
 # Read all users (R)
 @users_bp.route('/', methods=['GET'])
-# add admin only
+@admin_only
 def all_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
@@ -34,7 +35,7 @@ def all_users():
 
 # Read one user (R)
 @users_bp.route('/<int:id>', methods=['GET'])
-# add admin only
+
 def one_users(id):
     user = db.get_or_404(User, id)
     return UserSchema(exclude=["password"]).dump(user)
@@ -43,7 +44,7 @@ def one_users(id):
 # Create User (C)
 @users_bp.route('/', methods=['POST'])
 def create_user():
-    params = UserSchema().load(request.json, unknown='exclude')
+    params = UserSchema().load(request.json, unknown='exclude') 
     
     stmt = db.select(User).where(User.email == params['email'])
     user_match = db.session.scalar(stmt)
@@ -66,7 +67,7 @@ def create_user():
 
 # Update user information (U)
 @users_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
-# User with ID or admin
+
 def update_user(id):
     user = db.get_or_404(User, id)
     params = UserSchema().load(request.json, partial=True, unknown='exclude')
@@ -84,10 +85,9 @@ def update_user(id):
 
 # delete user (D) admin only
 @users_bp.route('/<int:id>', methods=['DELETE'])
-# add authentication, admin only
+
 def delete_user(id):
     user = db.get_or_404(User, id)
-    # add authorization
     db.session.delete(user)
     db.session.commit()
     return ({'message': 'User deleted'}), 200

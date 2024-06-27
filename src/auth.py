@@ -4,6 +4,7 @@ from init import db
 from models.user import User
 
 
+# Check to ensure user is admin, add to routes
 def admin_only(fn):
     @jwt_required()
     def admin_check():
@@ -18,7 +19,8 @@ def admin_only(fn):
     return admin_check
 
 
-def authorize_owner(card):
+# Check to make sure the user_id is on the path, else return error
+def authorize_owner(loyalties):
     user_id = get_jwt_identity()
-    if user_id != card.user_id and admin_only():
+    if user_id != loyalties.user_id and admin_only():
         abort(make_response(jsonify(error="You must be either the owner or an admin to access this resource")),403)

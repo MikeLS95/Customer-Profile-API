@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from init import db
 from models.passport import Passport, PassportSchema
 from models.user import User
+from auth import admin_only
 
 
 passport_bp = Blueprint('passports', __name__, url_prefix='/passports')
@@ -9,7 +10,7 @@ passport_bp = Blueprint('passports', __name__, url_prefix='/passports')
 
 # Retrieves all passports in database, shows user_id
 @passport_bp.route('/', methods=['GET'])
-# admin only
+
 def all_passports():
     stmt = db.select(Passport)
     passports = db.session.scalars(stmt).all()
@@ -18,7 +19,7 @@ def all_passports():
 
 # Retrieve a passport from the provided passport id
 @passport_bp.route('/<int:id>', methods=['GET'])
-# admin only
+
 def one_passport(id):
     passport = db.get_or_404(Passport, id)
     return PassportSchema().dump(passport)
@@ -26,7 +27,7 @@ def one_passport(id):
 
 # Create a new passport if a user exists and doesn't already have a passport associated with their user_id
 @passport_bp.route('/', methods=['POST'])
-#admin only
+
 def add_passport():
     params = PassportSchema().load(request.json)
     
@@ -58,7 +59,7 @@ def add_passport():
 
 # Retrieve and update a passport form the selected passport id
 @passport_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
-# admin only
+
 def update_passport(id):
     passport = db.get_or_404(Passport, id)
     params = PassportSchema().load(request.json, partial=True, unknown='exclude')
@@ -76,7 +77,7 @@ def update_passport(id):
 
 # Retrieve and delete a passport from the selected passport id
 @passport_bp.route('/<int:id>', methods=['DELETE'])
-# admin only
+
 def delete_passport(id):
     passport = db.get_or_404(Passport, id)
     db.session.delete(passport)

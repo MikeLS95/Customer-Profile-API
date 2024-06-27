@@ -1,14 +1,15 @@
 from flask import Blueprint, request
-from sqlalchemy.orm import session
 from init import db
 from models.group import Group, GroupSchema
 from models.user import User
+from auth import admin_only
 
 
 groups_bp = Blueprint('groups', __name__, url_prefix='/groups')
 
 
 @groups_bp.route('/', methods=['GET'])
+
 def all_groups():
     stmt = db.select(Group)
     groups = db.session.scalars(stmt).all()
@@ -25,6 +26,7 @@ def all_groups():
 
 # Using a specific loyalty ID, retrieves specified loyalty, 404 if no ID matches
 @groups_bp.route('/<int:id>', methods=['GET'])
+
 def one_group(id):
     group = db.get_or_404(Group, id)
     return GroupSchema(        
@@ -37,6 +39,7 @@ def one_group(id):
 
 
 @groups_bp.route('/', methods=['POST'])
+
 def add_group():
     params = GroupSchema().load(request.json)
     stmt = db.select(Group).where(Group.name == params["name"])
@@ -89,6 +92,7 @@ def validate_user_ids(params):
 
 
 @groups_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
+
 def update_group(id):
     group = db.get_or_404(Group, id)
     params = GroupSchema().load(request.json, partial=True, unknown='exclude')
@@ -111,6 +115,7 @@ def update_group(id):
 
 
 @groups_bp.route('/<int:id>', methods=['DELETE'])
+
 def delete_group(id):
     group = db.get_or_404(Group, id)
     db.session.delete(group)

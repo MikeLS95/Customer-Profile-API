@@ -18,7 +18,6 @@ class Group(db.Model):
     fourth_member = db.relationship('User', foreign_keys=[fourth_member_id], back_populates='fourth_member')
     
 
-
 class GroupSchema(ma.Schema):
     first_member_id = fields.Integer(allow_none=True)
     second_member_id = fields.Integer(allow_none=True)
