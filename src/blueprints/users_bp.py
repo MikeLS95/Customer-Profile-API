@@ -14,20 +14,14 @@ users_bp = Blueprint('users', __name__, url_prefix='/users')
 def login():
     # if user email matches checks passport, if no match, shows error message
     params = UserSchema(
-        only=[
-            'email',
-            'password']).load(
-        request.json,
-        unknown='exclude')
+        only=['email', 'password']).load(
+        request.json, unknown='exclude')
     stmt = db.select(User).where(User.email == params['email'])
     user = db.session.scalar(stmt)
-    # checks for password match then creates a key token, if no match, shows
-    # error message
+    # checks for password match then creates a key token, if no match, shows error message
     if user and bcrypt.check_password_hash(user.password, params['password']):
         token = create_access_token(
-            identity=user.id,
-            expires_delta=timedelta(
-                hours=2))
+            identity=user.id, expires_delta=timedelta(hours=2))
         return {'token': token}
     else:
         return {'ERROR': 'Invalid email or password'}, 401
@@ -65,10 +59,9 @@ def create_user():
         email=params["email"],
         first_name=params["first_name"],
         last_name=params["last_name"],
-        password=bcrypt.generate_password_hash(
-            params["password"]).decode('utf-8'),
-        is_admin=False,
-    )
+        password=bcrypt.generate_password_hash(params["password"]).decode(
+            'utf-8'),
+        is_admin=False,)
 
     db.session.add(user)
     db.session.commit()

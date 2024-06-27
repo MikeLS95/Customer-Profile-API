@@ -25,8 +25,7 @@ def one_passport(id):
     return PassportSchema().dump(passport)
 
 
-# Create a new passport if a user exists and doesn't already have a
-# passport associated with their user_id
+# Create a new passport if a user exists and doesn't already have a passport associated with their user_id
 @passport_bp.route('/', methods=['POST'])
 @admin
 def add_passport():

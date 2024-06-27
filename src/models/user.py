@@ -1,3 +1,4 @@
+from typing import Optional
 from marshmallow import fields
 from marshmallow.validate import Length
 from init import db, ma
@@ -14,55 +15,40 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, server_default='false')
 
     passports = db.relationship(
-        'Passport',
-        back_populates='user',
-        cascade='all,delete')
+        'Passport', back_populates='user', cascade='all,delete')
     loyalties = db.relationship(
-        'Loyalty',
-        back_populates='user',
-        cascade='all,delete')
+        'Loyalty', back_populates='user', cascade='all,delete')
 
     first_member = db.relationship(
-        'Group',
-        foreign_keys='Group.first_member_id',
+        'Group', foreign_keys='Group.first_member_id',
         back_populates='first_member',
-        primaryjoin='User.id == Group.first_member_id',
-        cascade='all,delete')
+        primaryjoin='User.id == Group.first_member_id', cascade='all,delete')
     second_member = db.relationship(
-        'Group',
-        foreign_keys='Group.second_member_id',
+        'Group', foreign_keys='Group.second_member_id',
         back_populates='second_member',
-        primaryjoin='User.id == Group.second_member_id',
-        cascade='all,delete')
+        primaryjoin='User.id == Group.second_member_id', cascade='all,delete')
     third_member = db.relationship(
-        'Group',
-        foreign_keys='Group.third_member_id',
+        'Group', foreign_keys='Group.third_member_id',
         back_populates='third_member',
-        primaryjoin='User.id == Group.third_member_id',
-        cascade='all,delete')
+        primaryjoin='User.id == Group.third_member_id', cascade='all,delete')
     fourth_member = db.relationship(
-        'Group',
-        foreign_keys='Group.fourth_member_id',
+        'Group', foreign_keys='Group.fourth_member_id',
         back_populates='fourth_member',
-        primaryjoin='User.id == Group.fourth_member_id',
-        cascade='all,delete')
+        primaryjoin='User.id == Group.fourth_member_id', cascade='all,delete')
 
 
 class UserSchema(ma.Schema):
+    # Ensures email is legitimate
     email = fields.Email(required=True)
+    # Ensures password meets specified criteria
     password = fields.String(
         validate=Length(
-            min=6,
-            max=22,
+            min=6, max=22,
             error='Password must be at between 6 and 22 characters long.'),
         required=True)
+    # Last name is optional
     last_name = fields.String(missing=None)
 
     class Meta:
-        fields = (
-            'id',
-            'email',
-            'first_name',
-            'last_name',
-            'password',
-            'is_admin')
+        fields = ('id', 'email', 'first_name',
+                  'last_name', 'password', 'is_admin')

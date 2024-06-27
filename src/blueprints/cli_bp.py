@@ -9,8 +9,7 @@ from models.passport import Passport
 db_commands = Blueprint('db', __name__)
 
 
-# Command used for replacing the database with the seeded entity data
-# below in the database
+# Command used for replacing the database with the seeded entity data below in the database
 @db_commands.cli.command('create')
 def db_create():
     # Deletes current data in database
@@ -22,32 +21,25 @@ def db_create():
     # Seeds users in the database
     users = [
         User(
-            email='admin@travelprofile.com',
-            first_name='Admin',
-            password=bcrypt.generate_password_hash('admin123').decode('utf-8'),
-            is_admin=True
-        ),
+            email='admin@travelprofile.com', first_name='Admin',
+            password=bcrypt.generate_password_hash('admin123').decode(
+                'utf-8'),
+            is_admin=True),
         User(
-            email='ben@travelprofile.com',
-            first_name='Ben',
+            email='ben@travelprofile.com', first_name='Ben',
             last_name='Benson',
-            password=bcrypt.generate_password_hash(
-                'benson123').decode('utf-8'),
-        ),
+            password=bcrypt.generate_password_hash('benson123').decode(
+                'utf-8'),),
         User(
-            email='Margo@travelprofile.com',
-            first_name='Margaret',
+            email='Margo@travelprofile.com', first_name='Margaret',
             last_name='Johnson',
-            password=bcrypt.generate_password_hash(
-                'Maggie123').decode('utf-8'),
-        ),
+            password=bcrypt.generate_password_hash('Maggie123').decode(
+                'utf-8'),),
         User(
-            email='GrahamB@travelprofile.com',
-            first_name='Graham',
+            email='GrahamB@travelprofile.com', first_name='Graham',
             last_name='Bert',
-            password=bcrypt.generate_password_hash('test123').decode('utf-8'),
-        )
-    ]
+            password=bcrypt.generate_password_hash('test123').decode(
+                'utf-8'),)]
 
     db.session.add_all(users)
     db.session.commit()

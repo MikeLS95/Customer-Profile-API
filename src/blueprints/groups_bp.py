@@ -24,8 +24,7 @@ def all_groups():
     ).dump(groups)
 
 
-# Using a specific loyalty ID, retrieves specified loyalty, 404 if no ID
-# matches
+# Using a specific loyalty ID, retrieves specified loyalty, 404 if no ID matches
 @groups_bp.route('/<int:id>', methods=['GET'])
 @admin
 def one_group(id):
@@ -82,8 +81,7 @@ def validate_user_ids(params):
         params.get("third_member_id"), params.get("fourth_member_id")
     ]
 
-    # Check if the user_id provided matches one on database, if not, returns
-    # error message
+    # Check if the user_id provided matches one on database, if not, returns error message
     for user_id in user_ids:
         if user_id is not None:  # Check for optional third and fourth members
             user = User.query.get(user_id)

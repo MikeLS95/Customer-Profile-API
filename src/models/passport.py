@@ -17,15 +17,10 @@ class Passport(db.Model):
 
 
 class PassportSchema(ma.Schema):
+    # Nested users first and last names in passport json response
     user = fields.Nested('UserSchema', only=['first_name', 'last_name'])
 
     class Meta:
         fields = (
-            'id',
-            'issue_country',
-            'birth_country',
-            'passport_number',
-            'issue_date',
-            'expiration_date',
-            'user_id',
-            'user')
+            'id', 'issue_country', 'birth_country', 'passport_number',
+            'issue_date', 'expiration_date', 'user_id', 'user')

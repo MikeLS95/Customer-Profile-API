@@ -15,8 +15,7 @@ def all_loyalties():
     return LoyaltySchema(many=True).dump(loyalties)
 
 
-# Using a specific loyalty ID, retrieves specified loyalty, 404 if no ID
-# matches
+# Using a specific loyalty ID, retrieves specified loyalty, 404 if no ID matches
 @loyalties_bp.route('/<int:id>', methods=['GET'])
 def one_loyalty(id):
     loyalty = db.get_or_404(Loyalty, id)
