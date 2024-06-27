@@ -52,7 +52,7 @@ def update_loyalty(id):
     loyalty.type = params.get('type', loyalty.type)
     
     db.session.commit()
-    return LoyaltySchema().dump(loyalty)
+    return LoyaltySchema().dump(loyalty), 200
 
 
 # Retrieves specified loyalty ID and deletes, 404 of no ID matches
