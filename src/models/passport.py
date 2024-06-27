@@ -12,12 +12,20 @@ class Passport(db.Model):
     issue_date = db.Column(db.Date, nullable=False)
     expiration_date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    
+
     user = db.relationship('User', back_populates='passports')
-                                                
+
 
 class PassportSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['first_name', 'last_name'])
 
     class Meta:
-        fields = ('id', 'issue_country', 'birth_country', 'passport_number', 'issue_date', 'expiration_date', 'user_id', 'user')
+        fields = (
+            'id',
+            'issue_country',
+            'birth_country',
+            'passport_number',
+            'issue_date',
+            'expiration_date',
+            'user_id',
+            'user')

@@ -9,7 +9,8 @@ from models.passport import Passport
 db_commands = Blueprint('db', __name__)
 
 
-# Command used for replacing the database with the seeded entity data below in the database
+# Command used for replacing the database with the seeded entity data
+# below in the database
 @db_commands.cli.command('create')
 def db_create():
     # Deletes current data in database
@@ -17,7 +18,6 @@ def db_create():
     # Inserts new data in database
     db.create_all()
     print('Created tables')
-
 
     # Seeds users in the database
     users = [
@@ -31,13 +31,15 @@ def db_create():
             email='ben@travelprofile.com',
             first_name='Ben',
             last_name='Benson',
-            password=bcrypt.generate_password_hash('benson123').decode('utf-8'),
+            password=bcrypt.generate_password_hash(
+                'benson123').decode('utf-8'),
         ),
         User(
             email='Margo@travelprofile.com',
             first_name='Margaret',
             last_name='Johnson',
-            password=bcrypt.generate_password_hash('Maggie123').decode('utf-8'),
+            password=bcrypt.generate_password_hash(
+                'Maggie123').decode('utf-8'),
         ),
         User(
             email='GrahamB@travelprofile.com',
@@ -46,10 +48,9 @@ def db_create():
             password=bcrypt.generate_password_hash('test123').decode('utf-8'),
         )
     ]
-    
+
     db.session.add_all(users)
     db.session.commit()
-
 
     # Seeds passports in the database
     passports = [
@@ -74,7 +75,6 @@ def db_create():
     db.session.add_all(passports)
     db.session.commit()
 
-
     # Seeds loyalties in the database
     loyalties = [
         Loyalty(
@@ -91,7 +91,6 @@ def db_create():
 
     db.session.add_all(loyalties)
     db.session.commit()
-
 
     # Seeds groups in the database
     groups = [

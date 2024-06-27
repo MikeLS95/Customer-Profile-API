@@ -8,7 +8,7 @@ class Loyalty(db.Model):
     supplier = db.Column(db.String, nullable=False)
     type = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    
+
     user = db.relationship('User', back_populates='loyalties')
 
 
