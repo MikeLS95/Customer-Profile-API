@@ -14,11 +14,7 @@
 
 - [R7 - Explain the implemented models and their relationships, including how the relationships aid the database implementation.](#R7)
 
-- [R8 - Explain how to use this application’s API endpoints. Each endpoint should be explained, including the following data for each endpoint: ](#R8)
-    - [HTTP verb](#R8)
-    - [Path or route](#R8)
-    - [Any required body or header data](#R8)
-    - [Response](#R8)
+- [R8 - Explain how to use this application’s API endpoints.](#R8)
 
 <a id="R1"></a>
 ### R1 - Explain the problem that this app will solve, and explain how this app solves or addresses the problem.
