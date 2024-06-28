@@ -84,7 +84,7 @@ Bcrypt is used to encrypt and decrypt passwords.  Bcrypt will hash a password be
 
 This app utilizes PostgreSQL.  PostgreSQL is a popular often used database open-source Relational Database Management System (RDBMS), it is know for its extensibility, adherence to SQL standards and for its robustness.  Here are its benefits and drawbacks:
 
-#### Benefits
+#### <ins>Benefits</ins>
 
 __Feature Rich:__ PostgreSQL includes a large range of features which include support for complex queries, indexing and JSON data types.  PostgreSQL also supports various extensions that offer additional functionalities.
 
@@ -94,24 +94,176 @@ __Scalability:__ PostgreSQL has the ability to handle high loads and large data 
 
 __Reliability:__ PostgreSQL is known for its reliability and stability, often being chosen for mission-critical applications when uptime and data integrity is essential.
 
-#### Drawbacks
+#### <ins>Drawbacks</ins>
 
-__Complexity:__
+__Complexity:__ It can be more complex than other RDBMS such as MySQL to set up and optimize PostgreSQL, this is especially true to people who are new to database administration.
 
-__Learning Curve:__
+__Learning Curve:__ As postgresql has a large feature set and advanced capabilities, it may have a steeper learning curve for beginners when compared to other simpler databases
 
-__Performance:__
+__Performance:__ PostgreSQL generally performs well, however, some benchmarks display that it can be slightly slower than some of the other databases when under certain conditions.  Performance can be dependent on the specific use case, configurations and the optimizations of the database.
 
-__
+Sources: 
+
+https://www.tessell.com/blogs/postgresql-concepts-benefits-and-use-cases
+
+https://www.boltic.io/blog/postgresql-performance-vs-mysql
 
 <a id="R5"></a>
 ### R5 - Explain the features, purpose and functionalities of the object-relational mapping system (ORM) used in this app.
 
+SQLAlchemy is the ORM used in this application.  SQLAlchemy is a popular ORM for Python that acts as a middle layer between Object-Oriented Programming (OOP) and relational databases.  Here is a breakdown of its Features, Purpose and Functionalities.
+
+#### <ins>Features</ins>
+Useful SQLAlchemy features:
+
+- Groups database operations and flushes them for efficiency in batches.
+- Flexible relationship mapping, handling various relationships between objects.
+- Utilizes CRUD operations.  Create, read, update and delete data using objects.
+- Offers low-level functionalities for raw SQL interaction when needed.
+
+#### <ins>Purpose</ins>
+The purpose of SQLAlchemy is to: 
+
+- Simplify the interactions with relational databases, using object orientated concepts.  
+- Reduce the need for writing raw SQL queries and statements
+- Provide a layer of abstraction for database access
+
+#### <ins>Functionalities</ins>
+Important SQLAlchemy functionalities:
+
+- Define object models.  You create python classes representing the tables in your database, including attribute mapping to table columns.
+- SQLAlchemy can automatically generate the CREATE TABLE statements based on your provided models.
+- Utilizes object-oriented syntax to construct queries for retrieving data.
+- SQLAlchemy is database agnostic, working with a wide variety of relational databases like PostgreSQL and MySQL.
+
 <a id="R6"></a>
 ### R6 - Design an entity relationship diagram (ERD) for this app’s database, and explain how the relations between the diagrammed models will aid the database design.
 
+The relations in the below diagram will assist in the database design by providing me with a visual view of how the database will be structured.  Providing me with a guide on how to define my models and create my tables in the database.
+
+Following the relationships designed in the ERD show me how to define each models interaction with each other inside of th database
+
+![ERD](./docs/CTP-ERD.jpeg)
+
 <a id="R7"></a>
 ### R7 - Explain the implemented models and their relationships, including how the relationships aid the database implementation.
+
+My application uses four different models.  These models are related to each other differently and are linked through the use of foreign keys.   All of my models are linked to users, but have no relationship to each other.  Below shows each model and their relationships with each other.
+
+ - Each user can have a single passport, and a passport can only belong to one user. This is a one-to-one relationship.
+
+ - A user can have many loyalties as they wish.  A loyalty can only belong to a single user.  This is a many-to-one relationship.
+
+ - Each group can have between two and four users attached as group members.  A user can belong to as many groups as they wish.  This is a many-to-many relationship.
+
+#### Users:
+The user model represents the customers who will be providing their data to be stored as well as the admin who has the authorization to access the stored data.
+User information stored is their User ID (Primary Key), email, first and last names (last name is not required), password and if they are admin, which is set to false by default to ensure new users created are not provided with the admin authorization.
+
+```py
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100))
+    password = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, server_default='false')
+
+    passports = db.relationship(
+        'Passport', back_populates='user', cascade='all,delete')
+    loyalties = db.relationship(
+        'Loyalty', back_populates='user', cascade='all,delete')
+
+    first_member = db.relationship(
+        'Group', foreign_keys='Group.first_member_id',
+        back_populates='first_member',
+        primaryjoin='User.id == Group.first_member_id', cascade='all,delete')
+    second_member = db.relationship(
+        'Group', foreign_keys='Group.second_member_id',
+        back_populates='second_member',
+        primaryjoin='User.id == Group.second_member_id', cascade='all,delete')
+    third_member = db.relationship(
+        'Group', foreign_keys='Group.third_member_id',
+        back_populates='third_member',
+        primaryjoin='User.id == Group.third_member_id', cascade='all,delete')
+    fourth_member = db.relationship(
+        'Group', foreign_keys='Group.fourth_member_id',
+        back_populates='fourth_member',
+        primaryjoin='User.id == Group.fourth_member_id', cascade='all,delete')
+```
+
+#### Passports:
+Sensitive information regarding each users identity.  This information is only available to the admin and includes; Passport ID (Primary Key), issue and birth country, passport number, issue and expiration date, as well as the user ID for whomever the passport belongs to.
+
+```py
+class Passport(db.Model):
+    __tablename__ = "passports"
+
+    id = db.Column(db.Integer, primary_key=True)
+    issue_country = db.Column(db.String, nullable=False)
+    birth_country = db.Column(db.String, nullable=False)
+    passport_number = db.Column(db.String, nullable=False)
+    issue_date = db.Column(db.Date, nullable=False)
+    expiration_date = db.Column(db.Date, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    user = db.relationship('User', back_populates='passports')
+```
+
+#### Loyalties:
+Loyalties are the loyalty rewards provided from a supplier to a user.  These are stored with the keys: supplier, type and user_id.  The supplier is the company that is supplying the reward and the type is the type of reward they are providing to the loyal customer, linked by user_id.
+
+```py
+class Loyalty(db.Model):
+    __tablename__ = "loyalties"
+
+    id = db.Column(db.Integer, primary_key=True)
+    supplier = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    user = db.relationship('User', back_populates='loyalties')
+```
+
+#### Groups:
+Travel groups can have between two and four members at a time.  This is achieved by assigning a user_id to each member_id then using the member_id in the table to create a new group.  Additionally, each travel group must have a unique name to help distinguish between other groups in the database in a friendly view other than by the primary key ID.
+
+```py
+class Group(db.Model):
+    __tablename__ = "groups"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(300), unique=True, nullable=False)
+    first_member_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'),
+        nullable=False)
+    second_member_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'),
+        nullable=False)
+    third_member_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'),
+        nullable=True)
+    fourth_member_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'),
+        nullable=True)
+
+    # Specific foreign keys
+    first_member = db.relationship(
+        'User', foreign_keys=[first_member_id],
+        back_populates='first_member')
+    second_member = db.relationship(
+        'User', foreign_keys=[second_member_id],
+        back_populates='second_member')
+    third_member = db.relationship(
+        'User', foreign_keys=[third_member_id],
+        back_populates='third_member')
+    fourth_member = db.relationship(
+        'User', foreign_keys=[fourth_member_id],
+        back_populates='fourth_member')
+```
+
 
 <a id="R8"></a>
 ### R8 - Explain how to use this application’s API endpoints. Each endpoint should be explained, including the following data for each endpoint:

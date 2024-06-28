@@ -1,3 +1,4 @@
+from marshmallow import fields
 from init import db, ma
 
 
@@ -13,5 +14,8 @@ class Loyalty(db.Model):
 
 
 class LoyaltySchema(ma.Schema):
+    # Nested users first and last names in passport json response
+    user = fields.Nested('UserSchema', only=['first_name', 'last_name'])
+
     class Meta:
-        fields = ('id', 'user_id', 'supplier', 'type')
+        fields = ('id', 'supplier', 'type', 'user_id', 'user')
