@@ -266,9 +266,220 @@ class Group(db.Model):
 
 
 <a id="R8"></a>
-### R8 - Explain how to use this application’s API endpoints. Each endpoint should be explained, including the following data for each endpoint:
+### R8 - Explain how to use this application’s API endpoints. 
 
-- HTTP verb
-- Path or route
-- Any required body or header data
-- Response
+#### User Endpoints
+
+User/Admin login
+
+- HTTP verb: POST
+- Path or route: /users/login
+- Any required body or header data: Email and password for existing user
+- Response: '200 OK' JSON response showing JWT token
+
+![Login](./docs/Endpoints/login.JPG)
+
+Get all users 
+
+- HTTP verb: GET
+- Path or route: /users
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response showing all users in database; id, email, first and/or last name, and if they are an admin.
+- Authentication: JWT Token
+
+![Get All Users](./docs/Endpoints/All-users.JPG)
+
+Get a user
+
+- HTTP verb: GET
+- Path or route: /users/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response showing the selected user in the database.
+- Authentication: JWT token
+
+![Get a user](./docs/Endpoints/Get%20a%20User.JPG)
+
+Add a user
+
+- HTTP verb: POST
+- Path or route: /users
+- Any required body or header data: Email, first name, last name (optional) & password
+- Response: '201 Created' JSON response showing added user including ID and if admin, but excluding password.
+
+![Add a user](./docs/Endpoints/Create-user.JPG)
+
+Update a user
+
+- HTTP verb: PUT
+- Path or route: /users/{id}
+- Any required body or header data: Email, first name, last name (optional) & password
+- Response: '200 OK' User ID with updated details
+- Authentication: JWT token
+
+![Update a user](./docs/Endpoints/Update%20user%20-%20body.JPG)
+
+Delete a user
+
+- HTTP verb: DELETE
+- Path or route: /users/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response "User deleted"
+- Authentication: JWT token
+
+![Delete a user](./docs/Endpoints/Delete%20user.JPG)
+
+#### Loyalty Endpoints
+
+Get all loyalties
+
+- HTTP verb: GET
+- Path or route: /loyalties
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response displaying all loyalties currently in the system including the ID, supplier, type, user ID and user information; First name & last name (If provided).
+- Authentication: JWT token
+
+![Get all loyalties](./docs/Endpoints/Get%20all%20loyalties%20-%20auth.JPG)
+
+Get a loyalty
+
+- HTTP verb: GET
+- Path or route: /loyalties/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response displaying the selected loyalty including the user information.
+- Authentication: JWT token
+
+![Get a loyalty](./docs/Endpoints/Get%20a%20loyalty%20-%20auth.JPG)
+
+Add a loyalty
+
+- HTTP verb: POST
+- Path or route: /loyalties
+- Any required body or header data: Supplier, type & user_id
+- Response: '201 Created' JSON response displaying the added loyalty including the user information.
+- Authentication: JWT token
+
+![Add a loyalty](./docs/Endpoints/Add%20loyalty%20-%20body.JPG)
+
+Update a loyalty
+
+- HTTP verb: PUT
+- Path or route: /loyalties/{id}
+- Any required body or header data: Supplier & type
+- Response: '200 OK' JSON response displaying the selected loyalty with the updated information, including user information.
+- Authentication: JWT token
+
+![Update a loyalty](./docs/Endpoints/Update%20loyalty%20-%20body.JPG)
+
+Delete a loyalty
+
+- HTTP verb: DELETE
+- Path or route: /loyalties/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response "loyalty deleted"
+- Authentication: JWT token
+
+![Delete a loyalty](./docs/Endpoints/Loyalty%20deleted.JPG)
+
+#### Passport Endpoints
+
+Get all passports
+
+- HTTP verb: GET
+- Path or route: /passports
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response showing all passports in the database, including all the passport information; ID, issue and birth country, passport number, issue and expiration date, and the user details including ID, first and last names.
+- Authentication: JWT token
+
+![Get all passports](./docs/Endpoints/get%20all%20passports.JPG)
+
+Get a passport
+
+- HTTP verb: GET
+- Path or route: /passports/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response showing only the selected passport with passport info and user info.
+- Authentication: JWT token
+
+![Get a passport](./docs/Endpoints/get%20a%20passport.JPG)
+
+Add a passport
+
+- HTTP verb: POST
+- Path or route: /passports
+- Any required body or header data: issue_country, birth_country, passport_number, issue_date, expiration_date & user_id
+- Response: '201 OK' JSON response showing the new passport with all passport and user information with the newly created passport ID.
+- Authentication: JWT token
+
+![Add a passport](./docs/Endpoints/Add%20passport%20-%20body.JPG)
+
+Update a passport
+
+- HTTP verb: PUT
+- Path or route: /passports/{id}
+- Any required body or header data: issue_country, birth_country, passport_number, issue_date & expiration_date
+- Response: '200 OK' JSON response showing the updated passport information with user information.
+- Authentication: JWT token
+
+![Update a passport](./docs/Endpoints/Update%20passport%20-%20body.JPG)
+
+Delete a passport
+
+- HTTP verb: GET
+- Path or route: /passports/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response "Passport deleted and removed from user"
+- Authentication: JWT token
+
+![Delete a passport](./docs/Endpoints/Delete%20passport.JPG)
+
+#### Group Endpoints
+
+Get all groups
+
+- HTTP verb: GET
+- Path or route: /groups
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response showing every group in database.  Group information displayed is: Group ID, name, first member details, second members details, third members details (optional) and fourth members details (optional).
+- Authentication: JWT token
+
+![Get all groups](./docs/Endpoints/Get%20all%20groups.JPG)
+
+Get a group
+
+- HTTP verb: GET
+- Path or route: /groups/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response showing the specific group in database.  Group information displayed with individual group members names displayed.
+- Authentication: JWT token
+
+![Get a Group](./docs/Endpoints/Get%20a%20group.JPG)
+
+Add a group
+
+- HTTP verb: POST
+- Path or route: /groups
+- Any required body or header data: Group name, first_member_id, second_member_id, third_member_id (optional) & fourth_member_id (optional).
+- Response: '200 OK' JSON response showing the added group with all member information, group name & group ID.
+- Authentication: JWT token
+
+![Add a group](./docs/Endpoints/Get%20a%20group%20-%20body.JPG)
+
+Update a group
+
+- HTTP verb: PUT
+- Path or route: /groups/{id}
+- Any required body or header data: Group name, first_member_id, second_member_id, third_member_id (optional) & fourth_member_id (optional).
+- Response: '201 OK' JSON response showing the updated group with all member information, group name & group ID.
+- Authentication: JWT token
+
+![Update a group](./docs/Endpoints/Update%20a%20group%20-%20body.JPG)
+
+Delete a group
+
+- HTTP verb: Delete
+- Path or route: /groups/{id}
+- Any required body or header data: N/A
+- Response: '200 OK' JSON response "Group deleted"
+- Authentication: JWT token
+
+![Delete a group](./docs/Endpoints/Delete%20group.JPG)

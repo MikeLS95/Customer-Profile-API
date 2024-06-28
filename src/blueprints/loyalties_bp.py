@@ -9,6 +9,7 @@ loyalties_bp = Blueprint('loyalties', __name__, url_prefix='/loyalties')
 
 
 @loyalties_bp.route('/', methods=['GET'])
+@admin
 def all_loyalties():
     stmt = db.select(Loyalty)
     loyalties = db.session.scalars(stmt).all()
@@ -17,6 +18,7 @@ def all_loyalties():
 
 # Using a specific loyalty ID, retrieves specified loyalty, 404 if no ID matches
 @loyalties_bp.route('/<int:id>', methods=['GET'])
+@admin
 def one_loyalty(id):
     loyalty = db.get_or_404(Loyalty, id)
     return LoyaltySchema().dump(loyalty)
